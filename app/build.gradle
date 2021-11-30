@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk 31
+    compileSdkVersion "android-S"
+
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.0-beta03"
+    }
+
+    defaultConfig {
+        applicationId "com.example.todokotlinandroid"
+        minSdk 21
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    def compose = "1.0.5"
+    def composeActivity = "1.4.0"
+    def composeNavigation = "2.4.0-beta02"
+    def composePaging = "1.0.0-alpha14"
+
+    implementation "androidx.compose.ui:ui-tooling:1.0.5"
+    implementation "androidx.compose.ui:ui:${compose}"
+    implementation "androidx.compose.ui:ui-tooling:${compose}"
+    implementation "androidx.compose.ui:ui-graphics:${compose}"
+    implementation "androidx.activity:activity-compose:${composeActivity}"
+    implementation "androidx.compose.foundation:foundation:${compose}"
+    implementation "androidx.compose.material:material:${compose}"
+    implementation "androidx.compose.material:material-icons-extended:${compose}"
+    implementation "androidx.navigation:navigation-compose:${composeNavigation}"
+    implementation "androidx.paging:paging-compose:${composePaging}"
+
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
