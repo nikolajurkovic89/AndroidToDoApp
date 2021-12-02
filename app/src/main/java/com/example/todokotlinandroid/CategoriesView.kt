@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -11,15 +12,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import data.models.Category
 
-data class Category(val id: Int, val name: String,)
 
 @Composable
 fun CategoriesView(
@@ -34,6 +38,7 @@ fun CategoriesView(
         }
     }
 
+@OptIn(ExperimentalUnitApi::class)
 @Composable
 internal fun CategoriesScreen(
     categoriesList: List<Category>,
@@ -43,6 +48,7 @@ internal fun CategoriesScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -57,7 +63,8 @@ internal fun CategoriesScreen(
         ) {
             Text(
                 text = "Categories",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontSize = TextUnit(32f, TextUnitType.Sp)
             )
             
             Text(
@@ -80,37 +87,55 @@ internal fun CategoriesScreen(
 
 @Composable
 private fun CategoryItemView(category: Category) {
-    Box(
+    Row(
+        horizontalArrangement = Arrangement.End,
         modifier = Modifier
-            .clickable { }
-            .fillMaxSize()
-            .background(LightRed)
-            .height(123.dp)
-            .defaultMinSize(251.dp)
-            .padding(
-                end = 0.dp,
-                top = 41.dp
-            ),
+            .fillMaxWidth()
+            .padding(top = 8.dp)
     ) {
-        Text(
+        Column(
             modifier = Modifier
-                .padding(
-                    start = dimensionResource(id = R.dimen.default_margin),
-                    top = dimensionResource(id = R.dimen.default_margin)),
-            text = category.name,
-            color = Color.White
-        )
+                .background(LightRed)
+                .width(251.dp)
+                .clip(
+                    RoundedCornerShape(
+                        bottomStart = 10.dp,
+                        topStart = dimensionResource(id = R.dimen.corner_radius)
+                    )
+                )
 
-        Text(
-            modifier = Modifier
-                .padding(
-                    bottom = dimensionResource(id = R.dimen.default_margin),
-                    end = dimensionResource(id = R.dimen.default_margin)
-                ),
-            text = "Add item +",
-            color = Color.White)
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = dimensionResource(id = R.dimen.default_margin),
+                        top = dimensionResource(id = R.dimen.default_margin)),
+                text = "${category.name} (${category.totalItems})"
+            )
 
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 57.dp,
+                        end = dimensionResource(id = R.dimen.default_margin),
+                        bottom = dimensionResource(id = R.dimen.default_margin)
+                    )
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(
+                            bottom = dimensionResource(id = R.dimen.default_margin),
+                            end = dimensionResource(id = R.dimen.default_margin)
+                        ),
+                    text = "Add item +",
+                    color = Color.White)
+
+            }
+        }
     }
+
 }
 
 @Preview(" CategoriesScreen Preview")
@@ -118,7 +143,7 @@ private fun CategoryItemView(category: Category) {
 fun CategoriesScreenPreview() {
     MaterialTheme {
         CategoriesScreen(
-            categoriesList = listOf(Category(1, "Nesto"), Category(2, "Nesto")),
+            categoriesList = listOf(Category(1, "Nesto", totalItems = 5), Category(2, "Nesto", totalItems = 5)),
             onCategoryClick = {}
         )
     }
