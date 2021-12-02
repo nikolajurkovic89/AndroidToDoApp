@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Preview
@@ -46,39 +48,27 @@ fun CategoriesEmptyScreen() {
                 fontWeight = FontWeight.Bold
             )
         }
-        Column(
+        Box(
             modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
         ) {
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
                 text = "Nothing here",
                 color = Color.LightGray,
-
+                modifier = Modifier
+                    .align(Alignment.Center)
             )
-        }
-
-        Button(onClick = {
-            //TODO: navigate to next screen
-        },
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .background(HeavenBlue)
-                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_radius)))
-                .padding(
-                    start = dimensionResource(id = R.dimen.default_margin),
-                    bottom = dimensionResource(id = R.dimen.default_margin),
-                    end = dimensionResource(id = R.dimen.default_margin),
-                )
-        ) {
-            Text(
-                text = "Add Category",
-                fontSize = 16.sp,
-                color = Color.White
+            Button(
+                onClick = { TODO() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(HeavenBlue)
+                    .align(Alignment.BottomCenter)
+                    .padding(
+                        start = dimensionResource(id = R.dimen.default_margin),
+                        bottom = dimensionResource(id = R.dimen.default_margin),
+                        end = dimensionResource(id = R.dimen.default_margin)
+                    )
             )
         }
     }
