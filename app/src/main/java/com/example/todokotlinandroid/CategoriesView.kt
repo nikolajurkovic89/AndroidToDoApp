@@ -95,14 +95,12 @@ private fun CategoryItemView(category: Category) {
     ) {
         Column(
             modifier = Modifier
-                .background(LightRed)
-                .width(251.dp)
                 .clip(
                     RoundedCornerShape(
                         bottomStart = 10.dp,
-                        topStart = dimensionResource(id = R.dimen.corner_radius)
-                    )
-                )
+                        topStart = dimensionResource(id = R.dimen.corner_radius)))
+                .background(LightRed)
+                .width(251.dp)
 
         ) {
             Text(
@@ -110,7 +108,8 @@ private fun CategoryItemView(category: Category) {
                     .padding(
                         start = dimensionResource(id = R.dimen.default_margin),
                         top = dimensionResource(id = R.dimen.default_margin)),
-                text = "${category.name} (${category.totalItems})"
+                text = "${category.name} (${category.totalItems})",
+                color = Color.White
             )
 
             Row(
@@ -126,7 +125,6 @@ private fun CategoryItemView(category: Category) {
                 Text(
                     modifier = Modifier
                         .padding(
-                            bottom = dimensionResource(id = R.dimen.default_margin),
                             end = dimensionResource(id = R.dimen.default_margin)
                         ),
                     text = "Add item +",

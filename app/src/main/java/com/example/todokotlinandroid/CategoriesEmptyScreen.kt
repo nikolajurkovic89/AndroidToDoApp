@@ -73,7 +73,6 @@ fun CategoriesEmptyScreen() {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(HeavenBlue)
                     .align(Alignment.BottomCenter)
                     .padding(
                         start = dimensionResource(id = R.dimen.default_margin),
