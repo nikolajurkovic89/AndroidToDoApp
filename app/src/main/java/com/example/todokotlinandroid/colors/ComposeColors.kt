@@ -1,4 +1,4 @@
-package com.example.todokotlinandroid
+package com.example.todokotlinandroid.colors
 
 import androidx.compose.ui.graphics.Color
 

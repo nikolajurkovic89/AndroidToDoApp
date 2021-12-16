@@ -1,12 +1,9 @@
-package com.example.todokotlinandroid
+package com.example.todokotlinandroid.features.categories
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,12 +13,18 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import com.example.todokotlinandroid.*
+import com.example.todokotlinandroid.R
+import com.example.todokotlinandroid.colors.HeavenBlue
+import com.example.todokotlinandroid.colors.LighterGray
+import com.example.todokotlinandroid.features.categories.CategoriesViewModel
+import com.example.todokotlinandroid.features.categories.CategoryIntent
+import kotlinx.coroutines.channels.Channel
 
 @OptIn(ExperimentalUnitApi::class)
-@Preview
 @Composable
 
-fun CategoriesEmptyScreen() {
+fun CategoriesEmptyScreen(intentChannel: Channel<CategoryIntent>) {
 
     Column(
         modifier = Modifier
@@ -66,7 +69,9 @@ fun CategoriesEmptyScreen() {
 
             )
             Button(
-                onClick = { TODO() },
+                onClick = {
+                          intentChannel.trySend(CategoryIntent.AddCategoryClicked)
+                },
                 colors = ButtonDefaults.buttonColors(
                   backgroundColor = HeavenBlue,
                   contentColor = Color.White
@@ -89,4 +94,12 @@ fun CategoriesEmptyScreen() {
         }
     }
 
+}
+
+@Composable
+@Preview("CategoriesEmptyScreen")
+fun CategoriesEmptyView() {
+    MaterialTheme() {
+        CategoriesEmptyScreen(Channel())
+    }
 }

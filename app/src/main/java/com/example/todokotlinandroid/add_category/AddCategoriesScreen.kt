@@ -1,4 +1,4 @@
-package com.example.todokotlinandroid.features.categories
+package com.example.todokotlinandroid.add_category
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,16 +15,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
-import com.example.todokotlinandroid.HeavenBlue
+import com.example.todokotlinandroid.*
 import com.example.todokotlinandroid.R
+import com.example.todokotlinandroid.colors.HeavenBlue
+import com.example.todokotlinandroid.features.categories.CategoryIntent
 
 @OptIn(ExperimentalUnitApi::class)
-@Preview
 @Composable
+fun AddCategoriesScreen(viewModel: AddCategoryViewModel) {
 
-fun AddCategoriesScreen() {
-
-    val textState = remember { mutableStateOf(TextFieldValue()) }
+    val viewState = viewModel.viewState.collectAsState().value
+    val intentChannel = viewModel.intentChannel
 
     Column(
         modifier = Modifier
@@ -36,11 +37,13 @@ fun AddCategoriesScreen() {
             modifier = Modifier
                 .padding(
                     start = 20.dp,
-                    top = 38.dp)
+                    top = 38.dp
+                )
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
-                contentDescription = "")
+                contentDescription = ""
+            )
 
             Text(
                 text = stringResource(id = R.string.create_category),
@@ -61,16 +64,18 @@ fun AddCategoriesScreen() {
                 )
         ) {
             TextField(
-                value = "",
-                label = { Text(text = "Title")},
-                onValueChange = {},
+                value = viewState.title,
+                label = { Text(text = "Title") },
+                onValueChange = { title ->
+                    intentChannel.trySend(AddCategoryIntent.TitleChanged(title))
+                },
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.White)
 
             )
             Button(
-                onClick = { TODO() },
+                onClick = { intentChannel.trySend(AddCategoryIntent.OnSaveButtonClicked) },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = HeavenBlue,
                     contentColor = Color.White
@@ -84,7 +89,7 @@ fun AddCategoriesScreen() {
                         end = dimensionResource(id = R.dimen.default_margin)
                     )
 
-            ){
+            ) {
                 Text(
                     text = "Save",
                     fontSize = 16.sp,

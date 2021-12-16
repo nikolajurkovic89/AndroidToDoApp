@@ -1,15 +1,14 @@
-package com.example.todokotlinandroid
+package com.example.todokotlinandroid.features.categories
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,29 +20,30 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import data.models.Category
+import com.example.todokotlinandroid.*
+import com.example.todokotlinandroid.R
+import com.example.todokotlinandroid.colors.LightRed
+import com.example.todokotlinandroid.models.Category
+import kotlinx.coroutines.channels.Channel
 
 
 @Composable
-fun CategoriesView(
-    categoriesList: List<Category>,
-    onCategoryClick: () -> Unit
-) {
-    if (categoriesList.isEmpty()) {
-        CategoriesEmptyScreen()
-    } else {
-        CategoriesScreen(categoriesList = categoriesList, onCategoryClick = onCategoryClick)
+fun CategoriesScreen(viewModel: CategoriesViewModel) {
+    val viewState = viewModel.viewState.collectAsState().value
+    val intentChannel = viewModel.intentChannel
 
+    if (viewState.categories.isEmpty()) {
+        CategoriesEmptyScreen(intentChannel)
+    } else {
+        CategoriesScreen(intentChannel, viewState)
         }
     }
 
 @OptIn(ExperimentalUnitApi::class)
 @Composable
-internal fun CategoriesScreen(
-    categoriesList: List<Category>,
-    onCategoryClick: () -> Unit
-) {
+internal fun CategoriesScreen(intentChannel: Channel<CategoryIntent>, viewState: CategoriesViewState) {
+
+
 
     Column(
         modifier = Modifier
@@ -56,7 +56,7 @@ internal fun CategoriesScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    start = dimensionResource(id = R.dimen.default_margin),
+                    start = dimensionResource(id = R.dimen.default_margin ),
                     top = 30.dp,
                     end = 31.dp
                 )
@@ -76,9 +76,9 @@ internal fun CategoriesScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            items(categoriesList.size) { index ->
-                val category = categoriesList[index]
-                CategoryItemView(category)
+            items(viewState.categories.size) { index ->
+                val category = viewState.categories[index]
+                CategoryItemView(intentChannel, category)
             }
 
         }
@@ -86,7 +86,7 @@ internal fun CategoriesScreen(
 }
 
 @Composable
-private fun CategoryItemView(category: Category) {
+private fun CategoryItemView(intentChannel: Channel<CategoryIntent>, category: Category) {
     Row(
         horizontalArrangement = Arrangement.End,
         modifier = Modifier
@@ -98,9 +98,12 @@ private fun CategoryItemView(category: Category) {
                 .clip(
                     RoundedCornerShape(
                         bottomStart = 10.dp,
-                        topStart = dimensionResource(id = R.dimen.corner_radius)))
+                        topStart = dimensionResource(id = R.dimen.corner_radius)
+                    )
+                )
                 .background(LightRed)
                 .width(251.dp)
+                .clickable { intentChannel.trySend(CategoryIntent.CategoryClicked(category.id)) }
 
         ) {
             Text(
@@ -140,10 +143,7 @@ private fun CategoryItemView(category: Category) {
 @Composable
 fun CategoriesScreenPreview() {
     MaterialTheme {
-        CategoriesScreen(
-            categoriesList = listOf(Category(1, "Nesto", totalItems = 5), Category(2, "Nesto", totalItems = 5)),
-            onCategoryClick = {}
-        )
+        CategoriesScreen(Channel(), CategoriesViewState())
     }
 }
 
@@ -152,6 +152,6 @@ fun CategoriesScreenPreview() {
 @Composable
 fun CategoriesEmptyScreenPreview() {
     MaterialTheme {
-        CategoriesEmptyScreen()
+        CategoriesEmptyScreen(Channel())
     }
 }

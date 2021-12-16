@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ToDoKotlinAndroid</string>
+    <string name="create_category">Create category</string>
 </resources>
