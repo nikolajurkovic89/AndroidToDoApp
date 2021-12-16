@@ -1,21 +1,22 @@
-package com.example.todokotlinandroid
+package com.example.todokotlinandroid.features.categories
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import com.example.todokotlinandroid.HeavenBlue
+import com.example.todokotlinandroid.R
 
 @OptIn(ExperimentalUnitApi::class)
 @Preview
@@ -23,12 +24,15 @@ import androidx.compose.ui.unit.*
 
 fun AddCategoriesScreen() {
 
+    val textState = remember { mutableStateOf(TextFieldValue()) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(
                     start = 20.dp,
@@ -39,7 +43,7 @@ fun AddCategoriesScreen() {
                 contentDescription = "")
 
             Text(
-                text = "Create category",
+                text = stringResource(id = R.string.create_category),
                 fontSize = TextUnit(16f, TextUnitType.Sp),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -56,12 +60,13 @@ fun AddCategoriesScreen() {
                     top = 49.dp
                 )
         ) {
-            Text(
-                text = "Title",
-                color = MediumGray,
-                fontSize = TextUnit(24f, TextUnitType.Sp),
+            TextField(
+                value = "",
+                label = { Text(text = "Title")},
+                onValueChange = {},
                 modifier = Modifier
-                    .padding(start = 16.dp)
+                    .fillMaxSize()
+                    .background(Color.White)
 
             )
             Button(
@@ -90,3 +95,4 @@ fun AddCategoriesScreen() {
     }
 
 }
+
